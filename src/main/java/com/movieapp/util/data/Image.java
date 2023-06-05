@@ -1,8 +1,8 @@
 package com.movieapp.util.data;
 public class Image{
 
-public String medium;
-String original;
+
+public String medium;String original;
 
 
 public Image(){}
