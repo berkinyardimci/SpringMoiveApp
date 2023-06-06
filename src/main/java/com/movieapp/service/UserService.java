@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -71,5 +72,25 @@ public class UserService {
     public List<User> findAllByEmailEndingWith(String value) {
         return userRepository.findAllByEmailEndingWith(value);
     }
+
+    public Boolean existsByEmailAndPassword(String email, String password) {
+        return userRepository.existsByEmailAndPassword(email,password);
+    }
+
+    public Optional<User> findByEmailIgnoreCaseAndPassword(String email, String password) {
+        Optional<User> optionalUser =  userRepository.findByEmailIgnoreCaseAndPassword(email,password);
+        if(optionalUser.isPresent()){
+            return optionalUser;
+        }else {
+            throw new RuntimeException("Böyle bir kullanıcı yok");
+        }
+    }
+
+    public List<User> passwordLongerThan(int length) {
+        return userRepository.passwordLongerThan(length);
+    }
+
+
+
 
 }

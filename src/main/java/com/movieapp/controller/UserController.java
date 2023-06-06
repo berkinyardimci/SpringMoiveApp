@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/user")
@@ -48,10 +49,26 @@ public class UserController {
         return ResponseEntity.ok(userService.findAllByEmailEndsWith(value));
     }
     //Rest Best Practice
-    //Restful api Naming convencion best practice
+    //Restful api Naming convension best practice
     @GetMapping("/endingwith")
     public ResponseEntity<List<User>> findAllByEmailEndingWith(String value){
         return ResponseEntity.ok(userService.findAllByEmailEndingWith(value));
     }
+
+    @GetMapping("/login")
+    public ResponseEntity<Boolean> existsByEmailAndPassword(String email, String password){
+        return ResponseEntity.ok(userService.existsByEmailAndPassword(email,password));
+    }
+
+    @GetMapping("/login2")
+    public ResponseEntity<Optional<User>> findByEmailIgnoreCaseAndPassword(String email, String password){
+        return ResponseEntity.ok(userService.findByEmailIgnoreCaseAndPassword(email,password));
+    }
+
+    @GetMapping("/passwordcheck")
+    public ResponseEntity<List<User>> passwordLongerThan(int length){
+        return ResponseEntity.ok(userService.passwordLongerThan(length));
+    }
+
 
 }
