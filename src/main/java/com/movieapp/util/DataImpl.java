@@ -33,7 +33,8 @@ public class DataImpl implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        saveAllMoviesFromTvMazetoDB();
+        //saveAllMoviesFromTvMazetoDB();
+        //createUser();
     }
 
     public void saveAllMoviesFromTvMazetoDB() {
@@ -84,7 +85,7 @@ public class DataImpl implements ApplicationRunner {
     public void createUser() {
         User user = User.builder().email("mert@hotmail.com").name("Mert").
                 surname("Kaya").password("123").phone("123")
-                .favGenres(genreService.createGenresWithName(List.of("Drama", "Science-Fiction", "Horror", "Documentry")))
+                .favGenres(genreService.createGenresWithName(List.of("Drama", "Science-Fiction", "Horror", "Documentry","AŞK")))
                 .favMovies(movieService.findAllByIds(List.of(1l, 10L, 15L, 100L, 50L, 90L, 120L, 148L)))
                 .build();
 
@@ -92,7 +93,7 @@ public class DataImpl implements ApplicationRunner {
         User user1 = User.builder().email("merve@gmail.com").name("Merve")
                 .favGenres(genreService.createGenresWithName(List.of("Drama", "Action", "Romance")))
                 .favMovies(movieService.findAllByIds(List.of(8l, 3L, 17L, 18L, 9L, 85L, 78L, 127L, 1L, 120L, 85L)))
-                .surName("Ozturk").password("123").phone("123")
+                .surname("Ozturk").password("123").phone("123")
                 .build();
 
         user1.setComments(List.of(
@@ -104,8 +105,8 @@ public class DataImpl implements ApplicationRunner {
         ));
         User user2 = User.builder().email("hasan@yandex.com").name("Hasan").
 
-                surName("Bayindir").password("123").phone("123")
-                .favGenres(genreService.createGenresWithNames(List.of("War", "Western", "History", "Action")))
+                surname("Bayindir").password("123").phone("123")
+                .favGenres(genreService.createGenresWithName(List.of("War", "Western", "History", "Action")))
                 .favMovies(movieService.findAllByIds(List.of(152l, 2L, 5L, 88L, 120L, 3L, 120L, 150L, 16L, 25L, 38L, 78L, 96L, 136L)))
                 .build();
         user2.setComments((List.of(
@@ -116,10 +117,10 @@ public class DataImpl implements ApplicationRunner {
                 MovieComment.builder().content("iyi").date(LocalDate.now().minusWeeks(2)).user(user2).movie(movieService.findbyId(25)).build()
         )));
         User user3 = User.builder().email("aras@gmail.com")
-                .favGenres(genreService.createGenresWithNames(List.of("Anime", "Comedy", "Supernatural", "Action")))
+                .favGenres(genreService.createGenresWithName(List.of("Anime", "Comedy", "Supernatural", "Action")))
                 .favMovies(movieService.findAllByIds(List.of(15l, 2L, 1L, 86L, 39L, 32L, 200L, 15L, 106L, 205L, 138L, 48L, 64L, 136L)))
                 .name("Aras").
-                surName("Gr").password("123").phone("123").favGenres(genreService.createGenresWithNames(List.of("Anime", "Comedy", "Supernatural", "Action"))).build();
+                surname("Gr").password("123").phone("123").favGenres(genreService.createGenresWithName(List.of("Anime", "Comedy", "Supernatural", "Action"))).build();
         user3.setComments(List.of(
                 MovieComment.builder().content("berbat").date(LocalDate.now().minusWeeks(58)).user(user3).movie(movieService.findbyId(14L)).build(),
                 MovieComment.builder().content("iyi").user(user3).date(LocalDate.now().minusWeeks(45)).movie(movieService.findbyId(136L)).build(),
@@ -131,7 +132,7 @@ public class DataImpl implements ApplicationRunner {
         User user4 = User.builder()
                 .favMovies(movieService.findAllByIds(List.of(51l, 212L, 81L, 86L, 139L, 52L, 20L, 105L, 126L, 25L, 18L, 4L, 6L, 126L)))
                 .email("didem@gmail.com").name("Didem")
-                .surName("Sonmez").password("123").phone("123")
+                .surname("Sonmez").password("123").phone("123")
                 .favGenres(genreService.createGenresWithName(List.of("Anime", "Action", "Mystery", "Supernatural"))).build();
 
         user4.setComments(List.of(
@@ -141,7 +142,7 @@ public class DataImpl implements ApplicationRunner {
         ));
 
         User user5 = User.builder().email("admin@gmail.com").name("Mustafa").
-                surName("Ozturk").userType(UserType.ADMIN).password("admin").phone("123")
+                surname("Ozturk").userType(UserType.ADMIN).password("admin").phone("123")
                 .favGenres(genreService.createGenresWithName(List.of("Science-Fiction", "Drama", "Music", "Anime")))
                 .favMovies(movieService.findAllByIds(List.of(14l, 22L, 106L, 88L, 104L, 66L, 20L, 104L, 126L, 25L, 13L, 4L, 69L, 47L, 200L)))
 
@@ -154,6 +155,7 @@ public class DataImpl implements ApplicationRunner {
                 MovieComment.builder().content("berbat").date(LocalDate.now().minusWeeks(5)).user(user5).movie(movieService.findbyId(108L)).build(),
                 MovieComment.builder().content("iyi").date(LocalDate.now().minusDays(10)).user(user5).movie(movieService.findbyId(25)).build()
         ));
+        userService.saveAll(List.of(user,user1,user2,user3,user4,user5));
     }
 
 }

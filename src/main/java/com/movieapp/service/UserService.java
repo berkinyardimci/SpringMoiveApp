@@ -43,4 +43,33 @@ public class UserService {
     public List<User> findAll() {
         return userRepository.findAll();
     }
+
+    public void saveAll(List<User> users) {
+        userRepository.saveAll(users);
+    }
+
+    public List<User> findAllByOrderByName() {
+        List<User> userList = userRepository.findAllByOrderByName();
+        if(userList.size() > 0){
+            return userList;
+        }else {
+            throw new RuntimeException("Veri Yok");
+        }
+    }
+    public List<User> findAllByNameLike(String name) {
+        return userRepository.findAllByNameLike(name);
+    }
+
+    public List<User> findUsersByEmailContainingIgnoreCase(String value) {
+        return userRepository.findUsersByEmailContainingIgnoreCase(value);
+    }
+
+    public List<User> findAllByEmailEndsWith(String value) {
+        return userRepository.findAllByEmailEndsWith(value);
+    }
+
+    public List<User> findAllByEmailEndingWith(String value) {
+        return userRepository.findAllByEmailEndingWith(value);
+    }
+
 }

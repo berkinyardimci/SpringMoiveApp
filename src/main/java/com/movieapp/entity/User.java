@@ -1,5 +1,6 @@
 package com.movieapp.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,10 +30,13 @@ public class User {
     @Column(length = 32)
     private String password;
     @ManyToMany
+    @JsonIgnore
     private List<Movie> favMovies;
     @ManyToMany
+    @JsonIgnore
     private List<Genre> favGenres;
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<MovieComment> comments;
     @Enumerated(EnumType.STRING)
     @Builder.Default

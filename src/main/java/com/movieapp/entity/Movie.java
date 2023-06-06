@@ -1,5 +1,6 @@
 package com.movieapp.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,6 +32,7 @@ public class Movie {
     private LocalDate premiered;
     private String url;
     @OneToMany(mappedBy = "movie")
+    @JsonIgnore
     private List<MovieComment> comments;
 
 }
