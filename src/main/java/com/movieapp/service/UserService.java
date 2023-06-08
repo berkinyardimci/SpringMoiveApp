@@ -5,6 +5,7 @@ import com.movieapp.dto.response.UserFindAllResponseDto;
 import com.movieapp.dto.response.UserRegisterResponseDto;
 import com.movieapp.entity.User;
 import com.movieapp.entity.UserType;
+import com.movieapp.mapper.IUserMapper;
 import com.movieapp.repository.IUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,7 @@ public class UserService {
                     .password(password)
                     .userType(userType1)
                     .build();
-        }catch (Exception ex){
+        } catch (Exception ex) {
             System.out.println("Böyle bir userType bulunamadı");
             user = User.builder()
                     .name(name)
@@ -45,11 +46,11 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public Optional<User> findById(Long id){
+    public Optional<User> findById(Long id) {
         Optional<User> optionalUser = userRepository.findById(id);
-        if(optionalUser.isPresent()){
+        if (optionalUser.isPresent()) {
             return optionalUser;
-        }else {
+        } else {
             throw new RuntimeException("Kullanıcı bulunamadı");
         }
     }
@@ -64,12 +65,13 @@ public class UserService {
 
     public List<User> findAllByOrderByName() {
         List<User> userList = userRepository.findAllByOrderByName();
-        if(userList.size() > 0){
+        if (userList.size() > 0) {
             return userList;
-        }else {
+        } else {
             throw new RuntimeException("Veri Yok");
         }
     }
+
     public List<User> findAllByNameLike(String name) {
         return userRepository.findAllByNameLike(name);
     }
@@ -87,14 +89,14 @@ public class UserService {
     }
 
     public Boolean existsByEmailAndPassword(String email, String password) {
-        return userRepository.existsByEmailAndPassword(email,password);
+        return userRepository.existsByEmailAndPassword(email, password);
     }
 
     public Optional<User> findByEmailIgnoreCaseAndPassword(String email, String password) {
-        Optional<User> optionalUser =  userRepository.findByEmailIgnoreCaseAndPassword(email,password);
-        if(optionalUser.isPresent()){
+        Optional<User> optionalUser = userRepository.findByEmailIgnoreCaseAndPassword(email, password);
+        if (optionalUser.isPresent()) {
             return optionalUser;
-        }else {
+        } else {
             throw new RuntimeException("Böyle bir kullanıcı yok");
         }
     }
@@ -103,7 +105,7 @@ public class UserService {
         return userRepository.passwordLongerThan(length);
     }
 
-    public UserRegisterResponseDto register(UserRegisterRequestDto dto){
+    public UserRegisterResponseDto register(UserRegisterRequestDto dto) {
         User user = User.builder()
                 .name(dto.getName())
                 .surname(dto.getSurname())
@@ -122,15 +124,23 @@ public class UserService {
                 .build();
     }
 
+    public UserRegisterResponseDto register2(UserRegisterRequestDto dto) {
+        User user = IUserMapper.INSTANCE.toUser(dto);
+        userRepository.save(user);
+        return IUserMapper.INSTANCE.toUserRegisterResponseDto(user);
+    }
+
+
     public List<UserFindAllResponseDto> findAlldto() {
-        return userRepository.findAll().stream().map(x->{
+        return userRepository.findAll().stream().map(x -> {
             return UserFindAllResponseDto.builder()
                     .id(x.getId())
                     .name(x.getName())
                     .surname(x.getSurname())
                     .favGenres(x.getFavGenres())
-                    .favMovie(x.getFavMovies())
                     .phone(x.getPhone())
+                    .movieCommentsContent(x.getComments().stream().map(y -> y.getContent()).collect(Collectors.toList()))
+                    .movieContent(x.getComments().stream().collect(Collectors.toMap(z -> z.getMovie().getName(), t -> t.getContent())))
                     .userType(x.getUserType())
                     .build();
         }).collect(Collectors.toList());

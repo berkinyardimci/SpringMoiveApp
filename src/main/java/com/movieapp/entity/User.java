@@ -34,7 +34,6 @@ public class User {
     @ManyToMany
     private List<Genre> favGenres;
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-    @JsonIgnore
     private List<MovieComment> comments;
     @Enumerated(EnumType.STRING)
     @Builder.Default

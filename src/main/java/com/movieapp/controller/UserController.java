@@ -8,10 +8,7 @@ import com.movieapp.entity.UserType;
 import com.movieapp.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -38,6 +35,11 @@ public class UserController {
     @PostMapping("/register")
     public UserRegisterResponseDto createUser(UserRegisterRequestDto dto){
         return userService.register(dto);
+    }
+
+    @PostMapping("/register2")
+    public UserRegisterResponseDto createUser2(@RequestBody UserRegisterRequestDto dto){
+        return userService.register2(dto);
     }
 
     @GetMapping("/create")
