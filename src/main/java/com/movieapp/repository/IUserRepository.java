@@ -38,6 +38,5 @@ public interface IUserRepository extends JpaRepository<User, Long> {
     /*
     @Query(value = "select * from tbl_user  where length(password)>?1 and name=?2", nativeQuery = true)
     List<User> passwordLongerThanNative2(int length , String name);
-
      */
 }

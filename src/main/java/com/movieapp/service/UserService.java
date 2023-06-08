@@ -1,5 +1,8 @@
 package com.movieapp.service;
 
+import com.movieapp.dto.request.UserRegisterRequestDto;
+import com.movieapp.dto.response.UserFindAllResponseDto;
+import com.movieapp.dto.response.UserRegisterResponseDto;
 import com.movieapp.entity.User;
 import com.movieapp.entity.UserType;
 import com.movieapp.repository.IUserRepository;
@@ -8,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -39,6 +43,15 @@ public class UserService {
                     .build();
         }
         return userRepository.save(user);
+    }
+
+    public Optional<User> findById(Long id){
+        Optional<User> optionalUser = userRepository.findById(id);
+        if(optionalUser.isPresent()){
+            return optionalUser;
+        }else {
+            throw new RuntimeException("Kullanıcı bulunamadı");
+        }
     }
 
     public List<User> findAll() {
@@ -90,7 +103,36 @@ public class UserService {
         return userRepository.passwordLongerThan(length);
     }
 
+    public UserRegisterResponseDto register(UserRegisterRequestDto dto){
+        User user = User.builder()
+                .name(dto.getName())
+                .surname(dto.getSurname())
+                .email(dto.getEmail())
+                .password(dto.getPassword())
+                .build();
+        userRepository.save(user);
 
+        return UserRegisterResponseDto.builder()
+                .id(user.getId())
+                .name(user.getName())
+                .surname(user.getSurname())
+                .email(user.getEmail())
+                .userType(user.getUserType())
+                .genres(user.getFavGenres())
+                .build();
+    }
 
-
+    public List<UserFindAllResponseDto> findAlldto() {
+        return userRepository.findAll().stream().map(x->{
+            return UserFindAllResponseDto.builder()
+                    .id(x.getId())
+                    .name(x.getName())
+                    .surname(x.getSurname())
+                    .favGenres(x.getFavGenres())
+                    .favMovie(x.getFavMovies())
+                    .phone(x.getPhone())
+                    .userType(x.getUserType())
+                    .build();
+        }).collect(Collectors.toList());
+    }
 }

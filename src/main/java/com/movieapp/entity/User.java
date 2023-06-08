@@ -30,10 +30,8 @@ public class User {
     @Column(length = 32)
     private String password;
     @ManyToMany
-    @JsonIgnore
     private List<Movie> favMovies;
     @ManyToMany
-    @JsonIgnore
     private List<Genre> favGenres;
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     @JsonIgnore
