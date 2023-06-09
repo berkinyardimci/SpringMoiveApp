@@ -7,8 +7,11 @@ import com.movieapp.dto.response.UserLoginResponseDto;
 import com.movieapp.dto.response.UserRegisterResponseDto;
 import com.movieapp.entity.User;
 import com.movieapp.entity.UserType;
+import com.movieapp.exception.ErrorType;
+import com.movieapp.exception.MovieAppException;
 import com.movieapp.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,8 +45,14 @@ public class UserController {
     }
 
     @PostMapping("/register2")
-    public UserRegisterResponseDto createUser2(@RequestBody UserRegisterRequestDto dto){
-        return userService.register2(dto);
+    public ResponseEntity<UserRegisterResponseDto> createUser2(@RequestBody UserRegisterRequestDto dto){
+        try{
+            UserRegisterResponseDto responseDto = userService.register2(dto);
+            System.out.println(0/100 + 100/0);
+            return new ResponseEntity(responseDto, HttpStatus.CREATED);
+        }catch (Exception ex){
+            throw new MovieAppException(ErrorType.INTERNAL_ERROR,"Sunucu Hatası Başka bişeyden kaynaklı");
+        }
     }
 
     @PostMapping("/login")

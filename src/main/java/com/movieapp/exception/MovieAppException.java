@@ -10,4 +10,9 @@ public class MovieAppException extends RuntimeException{
     public MovieAppException(ErrorType errorType){
         this.errorType = errorType;
     }
+
+    public MovieAppException(ErrorType errorType,String customMessage){
+        super(customMessage);
+        this.errorType = errorType;
+    }
 }
