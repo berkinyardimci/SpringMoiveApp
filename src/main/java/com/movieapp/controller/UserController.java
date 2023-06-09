@@ -1,7 +1,9 @@
 package com.movieapp.controller;
 
+import com.movieapp.dto.request.UserLoginRequestDto;
 import com.movieapp.dto.request.UserRegisterRequestDto;
 import com.movieapp.dto.response.UserFindAllResponseDto;
+import com.movieapp.dto.response.UserLoginResponseDto;
 import com.movieapp.dto.response.UserRegisterResponseDto;
 import com.movieapp.entity.User;
 import com.movieapp.entity.UserType;
@@ -30,6 +32,8 @@ public class UserController {
     //findAll --> UserFindAllResponseDto
     //id, name, email, surname, phone, usertype, favMovies, genres
 
+    //login methodu yazalım post request dto alsın bize dto dönsün
+
     private final UserService userService;
 
     @PostMapping("/register")
@@ -40,6 +44,16 @@ public class UserController {
     @PostMapping("/register2")
     public UserRegisterResponseDto createUser2(@RequestBody UserRegisterRequestDto dto){
         return userService.register2(dto);
+    }
+
+    @PostMapping("/login")
+    public UserLoginResponseDto login(@RequestBody UserLoginRequestDto dto){
+        return userService.login(dto);
+    }
+
+    @GetMapping("/loginnormal")
+    public User login(String email, String password){
+        return userService.loginNormal(email,password);
     }
 
     @GetMapping("/create")

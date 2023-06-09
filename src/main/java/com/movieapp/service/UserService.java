@@ -1,10 +1,14 @@
 package com.movieapp.service;
 
+import com.movieapp.dto.request.UserLoginRequestDto;
 import com.movieapp.dto.request.UserRegisterRequestDto;
 import com.movieapp.dto.response.UserFindAllResponseDto;
+import com.movieapp.dto.response.UserLoginResponseDto;
 import com.movieapp.dto.response.UserRegisterResponseDto;
 import com.movieapp.entity.User;
 import com.movieapp.entity.UserType;
+import com.movieapp.exception.ErrorType;
+import com.movieapp.exception.MovieAppException;
 import com.movieapp.mapper.IUserMapper;
 import com.movieapp.repository.IUserRepository;
 import lombok.RequiredArgsConstructor;
@@ -145,4 +149,36 @@ public class UserService {
                     .build();
         }).collect(Collectors.toList());
     }
+
+    public UserLoginResponseDto login(UserLoginRequestDto dto){
+        Optional<User> userOptional = userRepository.findByEmailIgnoreCaseAndPassword(dto.getEmail(), dto.getPassword());
+        if (userOptional.isPresent()){
+            return IUserMapper.INSTANCE.toUserLoginResponseDto(userOptional.get());
+            /*
+            return UserLoginResponseDto.builder()
+                    .id(userOptional.get().getId())
+                    .name(userOptional.get().getName())
+                    .email(userOptional.get().getEmail())
+                    .userType(userOptional.get().getUserType())
+                    .build();
+             */
+        }else {
+            throw new MovieAppException(ErrorType.USER_NOT_FOUND);
+        }
+    }
+
+    public User loginNormal(String email,String password){
+        Optional<User> userOptional = userRepository.findByEmailIgnoreCaseAndPassword(email, password);
+        if (userOptional.isPresent()){
+            return userOptional.get();
+        }else {
+            throw new RuntimeException("Kullanıcı Bulunamadı");
+        }
+    }
+
+    //Dtosuz ve testiz servis yazmayın!!
+
+    //Register --> name, surname, email, password istedik
+    //Login --> email, password kullanıcının bütün fieldlarını döndürmek yerine
+    //ihtiyacımız olan fieldları döndürdüyoruz
 }
